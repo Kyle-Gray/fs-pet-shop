@@ -40,7 +40,7 @@ app.post("/pets", function(req, res) {
   var age = Number.parseInt(pet.age);
   var kind = pet.kind;
   if (!age || !kind || !name) {
-    res.sendStatus(404);
+    res.sendStatus(400);
   }
 
   fs.readFile(petsPath, 'utf8', function(err,data){
@@ -66,7 +66,7 @@ app.put('/pets/:id', function(req, res) {
   var age = Number.parseInt(pet.age);
   var kind = pet.kind;
   if (!age || !kind || !name) {
-    res.sendStatus(404);
+    res.sendStatus(400);
   }
 
   fs.readFile(petsPath, 'utf8', function(err,data){
