@@ -37,19 +37,18 @@ app.get('/pets/:id', function(req, res) {
 app.post("/pets", function(req, res) {
   var pet = req.body;
   var name = pet.name;
-  var age = Number.parseInt(pet.age);
+  var age = pet.age;
   var kind = pet.kind;
   if (!age || !kind || !name) {
-    res.sendStatus(400);
+    return res.sendStatus(400);
   }
-
   fs.readFile(petsPath, 'utf8', function(err,data){
-    var pets = JSON.parse(data);
-    pets.push(pet);
-    var petsJSON = JSON.stringify(pets);
     if (err) {
       throw err;
     }
+    var pets = JSON.parse(data);
+    pets.push(pet);
+    var petsJSON = JSON.stringify(pets);
     fs.writeFile(petsPath, petsJSON,  function(writeErr){
       if (writeErr) {
         throw writeErr;
@@ -66,7 +65,7 @@ app.put('/pets/:id', function(req, res) {
   var age = Number.parseInt(pet.age);
   var kind = pet.kind;
   if (!age || !kind || !name) {
-    res.sendStatus(400);
+    return res.sendStatus(400);
   }
 
   fs.readFile(petsPath, 'utf8', function(err,data){
