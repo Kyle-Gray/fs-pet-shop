@@ -20,13 +20,11 @@ if (cmd === 'read'){
         process.exit(1);
       }
 
-
-      if(pet > pets.length || pet < 0){
+      else if(pet > pets.length || pet < 0){
         console.error(`Usage: ${node} ${file} read INDEX`);
         process.exit(1);
       }
-      console.log(pets[pet]);
-
+        console.log(pets[pet]);    
     });
   }
 else if(cmd === 'create'){
@@ -90,10 +88,10 @@ else if(cmd === 'update'){
     }
   });
 }
-else if(cmd === 'destroy'){
-    console.log("have not got here yet");
-}
+// else if(cmd === 'destroy'){
+//     console.log("have not got here yet");
+// }
 else{
-  console.log(`Usage: ${node} ${file} [ read | create | update | destroy]`);
+  console.error(`Usage: ${node} ${file} [read | create | update | destroy]`);
   process.exit(1);
 }
