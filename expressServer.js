@@ -59,6 +59,54 @@ app.post("/pets", function(req, res) {
   res.send(pet);
 });
 
+app.put('/pets/:id', function(req, res) {
+  var id = Number.parseInt(req.params.id);
+  var pet = req.body;
+  var name = pet.name;
+  var age = Number.parseInt(pet.age);
+  var kind = pet.kind;
+  if (!age || !kind || !name) {
+    res.sendStatus(404);
+  }
+
+  fs.readFile(petsPath, 'utf8', function(err,data){
+    var pets = JSON.parse(data);
+    pets[id]= pet;
+    var petsJSON = JSON.stringify(pets);
+    if (err) {
+      throw err;
+    }
+    fs.writeFile(petsPath, petsJSON,  function(writeErr){
+      if (writeErr) {
+        throw writeErr;
+      }
+    });
+  });
+  res.send(pet);
+});
+
+
+app.delete('/pets/:id', function(req, res) {
+  var id = Number.parseInt(req.params.id);
+  var pet = req.body;
+
+  fs.readFile(petsPath, 'utf8', function(err,data){
+    var pets = JSON.parse(data);
+    pet = pets.splice(id, 1)[0];
+    var petsJSON = JSON.stringify(pets);
+    if (err) {
+      throw err;
+    }
+    fs.writeFile(petsPath, petsJSON,  function(writeErr){
+      if (writeErr) {
+        throw writeErr;
+      }
+      res.send(pet);
+    });
+  });
+});
+
+
 app.listen('3000', function(){
   console.log("Listening on port 3000");
 });
