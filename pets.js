@@ -63,7 +63,7 @@ if (cmd === 'read') {
         }
         var pets = JSON.parse(data);
         if (!index || !age || !kind || !name) {
-            console.error(`Usage: ${node} ${file} update INDEX AGE KIND NAME`);
+            return console.error(`Usage: ${node} ${file} update INDEX AGE KIND NAME`);
         } else {
             var updatePet = {
                 age: age,
@@ -82,9 +82,26 @@ if (cmd === 'read') {
         }
     });
 }
-// else if(cmd === 'destroy'){
-//     console.log("have not got here yet");
-// }
+else if(cmd === 'destroy'){
+  var index = process.argv[3];
+
+  if(!index){
+    return console.error(`Usage: ${node} ${file} destroy INDEX`);
+  }
+  fs.readFile(petsPath, 'utf8', function(err,data){
+    var pets = JSON.parse(data);
+    var pet = pets.splice(index, 1)[0];
+    var petsJSON = JSON.stringify(pets);
+    if (err) {
+      throw err;
+    }
+    fs.writeFile(petsPath, petsJSON,  function(writeErr){
+      if (writeErr) {
+        throw writeErr;
+      }
+      console.log(pet);
+    });
+  });}
 else {
     console.error(`Usage: ${node} ${file} [read | create | update | destroy]`);
     process.exit(1);
